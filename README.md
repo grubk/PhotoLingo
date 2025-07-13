@@ -37,7 +37,7 @@ Once you’ve uploaded an image and selected a language, PhotoLingo:
 
 ## 📦 Installation
 
-Download the latest version from the [**Releases Page**](#) and follow the installation instructions for your platform.
+Download the latest version from the [**Releases Page**](https://github.com/grubk/photolingo/releases) and follow the installation instructions for your platform.
 
 ---
 
