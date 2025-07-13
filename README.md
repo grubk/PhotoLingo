@@ -11,7 +11,7 @@
 
 2. **Upload an Image**  
    Upload a picture of a common object.  
-   > ⚠️ *Note: Only very common objects are recognized for now, as the app uses free-tier AI models.*
+   > ⚠️ *Note: Only very common objects are recognized for now, as the app uses a small AI model to save the user storage space.*
 
 3. **Translate the Object**  
    The AI will recognize the object and provide **three possible labels** in your selected language.
