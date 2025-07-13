@@ -2,12 +2,131 @@
 
 import React, { useState, useRef, useCallback } from 'react';
 import { imageClassifier, Prediction } from '@/utils/imageClassifier';
+import { translateText } from '@/utils/translator';
+
+// Lingva Translate supported languages
+const SUPPORTED_LANGUAGES = [
+  { code: 'af', name: 'Afrikaans' },
+  { code: 'sq', name: 'Albanian' },
+  { code: 'am', name: 'Amharic' },
+  { code: 'ar', name: 'Arabic' },
+  { code: 'hy', name: 'Armenian' },
+  { code: 'az', name: 'Azerbaijani' },
+  { code: 'eu', name: 'Basque' },
+  { code: 'be', name: 'Belarusian' },
+  { code: 'bn', name: 'Bengali' },
+  { code: 'bs', name: 'Bosnian' },
+  { code: 'bg', name: 'Bulgarian' },
+  { code: 'ca', name: 'Catalan' },
+  { code: 'ceb', name: 'Cebuano' },
+  { code: 'ny', name: 'Chichewa' },
+  { code: 'zh', name: 'Chinese (Simplified)' },
+  { code: 'zh-tw', name: 'Chinese (Traditional)' },
+  { code: 'co', name: 'Corsican' },
+  { code: 'hr', name: 'Croatian' },
+  { code: 'cs', name: 'Czech' },
+  { code: 'da', name: 'Danish' },
+  { code: 'nl', name: 'Dutch' },
+  { code: 'en', name: 'English' },
+  { code: 'eo', name: 'Esperanto' },
+  { code: 'et', name: 'Estonian' },
+  { code: 'tl', name: 'Filipino' },
+  { code: 'fi', name: 'Finnish' },
+  { code: 'fr', name: 'French' },
+  { code: 'fy', name: 'Frisian' },
+  { code: 'gl', name: 'Galician' },
+  { code: 'ka', name: 'Georgian' },
+  { code: 'de', name: 'German' },
+  { code: 'el', name: 'Greek' },
+  { code: 'gu', name: 'Gujarati' },
+  { code: 'ht', name: 'Haitian Creole' },
+  { code: 'ha', name: 'Hausa' },
+  { code: 'haw', name: 'Hawaiian' },
+  { code: 'he', name: 'Hebrew' },
+  { code: 'hi', name: 'Hindi' },
+  { code: 'hmn', name: 'Hmong' },
+  { code: 'hu', name: 'Hungarian' },
+  { code: 'is', name: 'Icelandic' },
+  { code: 'ig', name: 'Igbo' },
+  { code: 'id', name: 'Indonesian' },
+  { code: 'ga', name: 'Irish' },
+  { code: 'it', name: 'Italian' },
+  { code: 'ja', name: 'Japanese' },
+  { code: 'jv', name: 'Javanese' },
+  { code: 'kn', name: 'Kannada' },
+  { code: 'kk', name: 'Kazakh' },
+  { code: 'km', name: 'Khmer' },
+  { code: 'ko', name: 'Korean' },
+  { code: 'ku', name: 'Kurdish (Kurmanji)' },
+  { code: 'ky', name: 'Kyrgyz' },
+  { code: 'lo', name: 'Lao' },
+  { code: 'la', name: 'Latin' },
+  { code: 'lv', name: 'Latvian' },
+  { code: 'lt', name: 'Lithuanian' },
+  { code: 'lb', name: 'Luxembourgish' },
+  { code: 'mk', name: 'Macedonian' },
+  { code: 'mg', name: 'Malagasy' },
+  { code: 'ms', name: 'Malay' },
+  { code: 'ml', name: 'Malayalam' },
+  { code: 'mt', name: 'Maltese' },
+  { code: 'mi', name: 'Maori' },
+  { code: 'mr', name: 'Marathi' },
+  { code: 'mn', name: 'Mongolian' },
+  { code: 'my', name: 'Myanmar (Burmese)' },
+  { code: 'ne', name: 'Nepali' },
+  { code: 'no', name: 'Norwegian' },
+  { code: 'ps', name: 'Pashto' },
+  { code: 'fa', name: 'Persian' },
+  { code: 'pl', name: 'Polish' },
+  { code: 'pt', name: 'Portuguese' },
+  { code: 'pa', name: 'Punjabi' },
+  { code: 'ro', name: 'Romanian' },
+  { code: 'ru', name: 'Russian' },
+  { code: 'sm', name: 'Samoan' },
+  { code: 'gd', name: 'Scots Gaelic' },
+  { code: 'sr', name: 'Serbian' },
+  { code: 'st', name: 'Sesotho' },
+  { code: 'sn', name: 'Shona' },
+  { code: 'sd', name: 'Sindhi' },
+  { code: 'si', name: 'Sinhala' },
+  { code: 'sk', name: 'Slovak' },
+  { code: 'sl', name: 'Slovenian' },
+  { code: 'so', name: 'Somali' },
+  { code: 'es', name: 'Spanish' },
+  { code: 'su', name: 'Sundanese' },
+  { code: 'sw', name: 'Swahili' },
+  { code: 'sv', name: 'Swedish' },
+  { code: 'tg', name: 'Tajik' },
+  { code: 'ta', name: 'Tamil' },
+  { code: 'te', name: 'Telugu' },
+  { code: 'th', name: 'Thai' },
+  { code: 'tr', name: 'Turkish' },
+  { code: 'uk', name: 'Ukrainian' },
+  { code: 'ur', name: 'Urdu' },
+  { code: 'uz', name: 'Uzbek' },
+  { code: 'vi', name: 'Vietnamese' },
+  { code: 'cy', name: 'Welsh' },
+  { code: 'xh', name: 'Xhosa' },
+  { code: 'yi', name: 'Yiddish' },
+  { code: 'yo', name: 'Yoruba' },
+  { code: 'zu', name: 'Zulu' },
+];
+
+interface TranslationData {
+  original: string;
+  translated: string;
+  language: string;
+  probability: number;
+}
 
 export default function ImageRecognition() {
   const [predictions, setPredictions] = useState<Prediction[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>('');
   const [imageUrl, setImageUrl] = useState<string>('');
+  const [selectedLanguage, setSelectedLanguage] = useState<string>('es'); // Default to Spanish
+  const [translationPanel, setTranslationPanel] = useState<TranslationData | null>(null);
+  const [translating, setTranslating] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
 
@@ -24,6 +143,7 @@ export default function ImageRecognition() {
     setLoading(true);
     setError('');
     setPredictions([]);
+    setTranslationPanel(null);
 
     try {
       // Create preview URL
@@ -41,13 +161,54 @@ export default function ImageRecognition() {
     }
   }, []);
 
+  const handlePredictionClick = useCallback(async (prediction: Prediction) => {
+    setTranslating(true);
+    setError(''); // Clear any previous errors
+    
+    try {
+      console.log('Attempting translation:', {
+        sourceLang: 'en',
+        targetLang: selectedLanguage,
+        text: prediction.className
+      });
+      
+      const translated = await translateText('en', selectedLanguage, prediction.className);
+      
+      console.log('Translation result:', translated);
+      
+      if (!translated) {
+        throw new Error(`Translation service returned no result. The language '${selectedLanguage}' might not be supported by this API.`);
+      }
+      
+      const languageName = SUPPORTED_LANGUAGES.find(lang => lang.code === selectedLanguage)?.name || selectedLanguage;
+      
+      setTranslationPanel({
+        original: prediction.className,
+        translated: translated,
+        language: languageName,
+        probability: prediction.probability
+      });
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Translation failed';
+      setError(`Translation error: ${errorMessage}`);
+      console.error('Translation error:', err);
+    } finally {
+      setTranslating(false);
+    }
+  }, [selectedLanguage]);
+
   const clearImage = useCallback(() => {
     setPredictions([]);
     setImageUrl('');
     setError('');
+    setTranslationPanel(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
+  }, []);
+
+  const closeTranslationPanel = useCallback(() => {
+    setTranslationPanel(null);
   }, []);
 
   return (
@@ -56,12 +217,31 @@ export default function ImageRecognition() {
         AI Image Recognition
       </h2>
       
+      {/* Language Selection */}
+      <div className="mb-6">
+        <label htmlFor="language-select" className="block text-sm font-medium text-gray-700 mb-2">
+          Select Translation Language:
+        </label>
+        <select
+          id="language-select"
+          value={selectedLanguage}
+          onChange={(e) => setSelectedLanguage(e.target.value)}
+          className="w-full p-3 text-gray-800 border border-gray-800 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+        >
+          {SUPPORTED_LANGUAGES.map((lang) => (
+            <option key={lang.code} value={lang.code} className="text-gray-800">
+              {lang.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
       {/* Upload Section */}
       <div className="mb-6">
         <div className="flex items-center justify-center w-full">
           <label 
             htmlFor="image-upload" 
-            className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors"
+            className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-800 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors"
           >
             {imageUrl ? (
               <img 
@@ -118,15 +298,17 @@ export default function ImageRecognition() {
         </div>
       )}
 
-      {/* Results */}
+      {/* Results as Clickable Buttons */}
       {predictions.length > 0 && (
         <div className="mb-6">
-          <h3 className="text-lg font-semibold mb-3 text-gray-800">Recognition Results:</h3>
-          <div className="space-y-2">
+          <h3 className="text-lg font-semibold mb-3 text-gray-800">Recognition Results (Click to translate):</h3>
+          <div className="grid grid-cols-1 gap-2">
             {predictions.slice(0, 5).map((prediction, index) => (
-              <div 
-                key={index} 
-                className="flex justify-between items-center p-3 bg-gray-100 rounded-lg"
+              <button
+                key={index}
+                onClick={() => handlePredictionClick(prediction)}
+                disabled={translating}
+                className="flex justify-between items-center p-3 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <span className="font-medium text-gray-800 capitalize">
                   {prediction.className}
@@ -142,8 +324,65 @@ export default function ImageRecognition() {
                     {(prediction.probability * 100).toFixed(1)}%
                   </span>
                 </div>
-              </div>
+              </button>
             ))}
+          </div>
+        </div>
+      )}
+
+      {/* Translation Panel */}
+      {translationPanel && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4 relative">
+            <button
+              onClick={closeTranslationPanel}
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            
+            <h3 className="text-xl font-bold mb-4 text-gray-800">Translation Details</h3>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-600 mb-1">Original (English):</label>
+                <p className="text-lg font-semibold text-gray-800 capitalize">{translationPanel.original}</p>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-600 mb-1">
+                  Translation ({translationPanel.language}):
+                </label>
+                <p className="text-lg font-semibold text-blue-600">{translationPanel.translated}</p>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-600 mb-1">Confidence:</label>
+                <div className="flex items-center">
+                  <div className="w-full bg-gray-200 rounded-full h-3 mr-3">
+                    <div 
+                      className="bg-green-500 h-3 rounded-full transition-all duration-300" 
+                      style={{ width: `${translationPanel.probability * 100}%` }}
+                    ></div>
+                  </div>
+                  <span className="text-sm font-bold text-gray-700">
+                    {(translationPanel.probability * 100).toFixed(1)}%
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Translating State */}
+      {translating && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 text-center">
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-4"></div>
+            <p className="text-gray-600">Translating...</p>
           </div>
         </div>
       )}
@@ -151,6 +390,7 @@ export default function ImageRecognition() {
       {/* Info */}
       <div className="text-sm text-gray-500 text-center">
         <p className="mt-1">Recognizes 1000+ categories of objects, animals, and scenes</p>
+        <p className="mt-1">Click on any result to see translation in {SUPPORTED_LANGUAGES.find(lang => lang.code === selectedLanguage)?.name}</p>
       </div>
     </div>
   );
