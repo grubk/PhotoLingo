@@ -3,6 +3,7 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { imageClassifier, Prediction } from '@/utils/imageClassifier';
 import { translateText } from '@/utils/translator';
+import SpotlightCard from './spotlightcard';
 
 // Lingva Translate supported languages
 const SUPPORTED_LANGUAGES = [
@@ -212,7 +213,7 @@ export default function ImageRecognition() {
   }, []);
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+    <SpotlightCard className= "custom-spotlight-card" spotlightColor="rgba(0, 0, 0, 0.4)">
       <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
         AI Image Recognition
       </h2>
@@ -392,6 +393,6 @@ export default function ImageRecognition() {
         <p className="mt-1">Recognizes 1000+ categories of objects, animals, and scenes</p>
         <p className="mt-1">Click on any result to see translation in {SUPPORTED_LANGUAGES.find(lang => lang.code === selectedLanguage)?.name}</p>
       </div>
-    </div>
+    </SpotlightCard>
   );
 }
