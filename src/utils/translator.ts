@@ -5,7 +5,6 @@ export async function translateText(
 ): Promise<string | null> {
   const encodedText = encodeURIComponent(text);
   const url = `https://grubk-lingvatranslate.vercel.app/api/v1/${sourceLang}/${targetLang}/${encodedText}`;
-  //const url = `https://grubk-lingvatranslate.vercel.app/api/v1/en/fr/greetings`;
 
   console.log("Translation URL:", url); // Debug log to verify URL format
 
