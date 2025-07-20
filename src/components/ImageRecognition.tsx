@@ -128,6 +128,7 @@ export default function ImageRecognition() {
   const [selectedLanguage, setSelectedLanguage] = useState<string>('es'); // Default to Spanish
   const [translationPanel, setTranslationPanel] = useState<TranslationData | null>(null);
   const [translating, setTranslating] = useState(false);
+  const [historyPanel, setHistoryPanel] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
 
@@ -220,6 +221,33 @@ export default function ImageRecognition() {
 
   const closeTranslationPanel = useCallback(() => {
     setTranslationPanel(null);
+  }, []);
+
+  const openHistoryPanel = useCallback(() => {
+    setHistoryPanel(true);
+  }, []);
+
+  const closeHistoryPanel = useCallback(() => {
+    setHistoryPanel(false);
+  }, []);
+
+  const getTranslationHistory = useCallback(() => {
+    const history = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key?.startsWith('translation_')) {
+        try {
+          const data = JSON.parse(localStorage.getItem(key) || '');
+          history.push({
+            ...data,
+            timestamp: key.replace('translation_', '')
+          });
+        } catch (error) {
+          console.error('Error parsing translation history:', error);
+        }
+      }
+    }
+    return history.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
   }, []);
 
   return (
@@ -403,6 +431,63 @@ export default function ImageRecognition() {
         <p className="mt-1">Recognizes 1000+ categories of objects, animals, and scenes</p>
         <p className="mt-1">Click on any result to see translation in {SUPPORTED_LANGUAGES.find(lang => lang.code === selectedLanguage)?.name}</p>
       </div>
+
+      {/* Translation History Button */}
+      <div className="mt-6 text-center">
+        <button
+          onClick={openHistoryPanel}
+          className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors"
+        >
+          Translation History
+        </button>
+      </div>
+
+      {/* Translation History Panel */}
+      {historyPanel && (
+        <div className="fixed inset-0 backdrop-blur-md bg-none flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4 relative shadow-xl h-2/3 flex flex-col">
+            <button
+              onClick={closeHistoryPanel}
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            
+            <h3 className="text-xl font-bold mb-4 text-gray-800">Translation History</h3>
+            
+            <div className="overflow-y-auto flex-1">
+              {getTranslationHistory().length === 0 ? (
+                <p className="text-gray-500 text-center py-8">
+                  Begin using PhotoLingo and see what you translated here.
+                </p>
+              ) : (
+                <div className="space-y-3">
+                  {getTranslationHistory().map((item, index) => (
+                    <div key={index} className="border-b border-gray-200 pb-3">
+                      <div className="flex items-center justify-between px-1">
+                        <div className="flex-1">
+                          <span className="font-medium text-gray-800 capitalize">{item.originalWord}</span>
+                        </div>
+                        <div className="flex flex-col items-center mx-4">
+                          <span className="text-xs text-gray-500 mb-1">{item.targetLanguageName}</span>
+                          <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                          </svg>
+                        </div>
+                        <div className="flex-1 text-right">
+                          <span className="font-medium text-blue-600">{item.translatedWord}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </SpotlightCard>
   );
 }
