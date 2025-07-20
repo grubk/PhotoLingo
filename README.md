@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📸 PhotoLingo
 
-## Getting Started
+**PhotoLingo** is a lightweight, beginner-friendly application that helps users learn new languages by recognizing everyday objects and translating their names into different languages.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 How It Works
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. **Choose a Language**  
+   Select the language you'd like to learn.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2. **Upload an Image**  
+   Upload a picture of a common object.  
+   > ⚠️ *Note: Only very common objects are recognized for now, as the app uses a small AI model to save the user storage space.*
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. **Translate the Object**  
+   The AI will recognize the object and provide **three possible labels** in your selected language.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🌍 What Happens Next?
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Once you’ve uploaded an image and selected a language, PhotoLingo:
+- Uses an AI model to guess the object in the photo.
+- Translates the guesses using Lingva Translate.
+- Displays the translated words so you can learn how the object is named in your chosen language.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🛠️ Tech Stack
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- 🧠 **MobileNet** – for image recognition  
+- 🌐 **Lingva Translate** – for multilingual translation  
+  [🔗 GitHub Repo](https://github.com/thedaviddelta/lingva-translate)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 📦 Installation
+
+Download the latest version from the [**Releases Page**](https://github.com/grubk/photolingo/releases) and follow the installation instructions for your platform.
+
+---
+
+## 🙏 Special Thanks
+
+- [Lingva Translate](https://github.com/thedaviddelta/lingva-translate)
+- MobileNet Model (TensorFlow.js)
+
+---
+
+## 📢 Disclaimer
+
+This is a passion project built using **only free resources**, so please bear with any limitations. Recognition accuracy will (maybe) improve in future updates if I get rich one day and can use a better model. Who knows, maybe some day I will train my own model and waste all of the storage on my hard drive.
+
+---
+
+Enjoy learning new languages with **PhotoLingo**! 🌐✨
