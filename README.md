@@ -2,6 +2,7 @@
 
 **PhotoLingo** is a lightweight, beginner-friendly application that helps users learn new languages by recognizing everyday objects and translating their names into different languages.
 
+<img src="https://github.com/grubk/photolingo/blob/master/src-tauri/icons/PhotoLingoIcon.png" alt="PhotoLingo Logo" width="250">
 ---
 
 ## 🚀 How It Works
