@@ -164,7 +164,7 @@ export default function ImageRecognition() {
 
   const handlePredictionClick = useCallback(async (prediction: Prediction) => {
     setTranslating(true);
-    setError(''); // Clear any previous errors
+    setError('');
     
     try {
       console.log('Attempting translation:', {
@@ -182,6 +182,16 @@ export default function ImageRecognition() {
       }
       
       const languageName = SUPPORTED_LANGUAGES.find(lang => lang.code === selectedLanguage)?.name || selectedLanguage;
+      
+      const translationData = {
+        originalWord: prediction.className,
+        targetLanguage: selectedLanguage,
+        targetLanguageName: languageName,
+        translatedWord: translated,
+      };
+      
+      const timestamp = new Date().toISOString();
+      localStorage.setItem(`translation_${timestamp}`, JSON.stringify(translationData));
       
       setTranslationPanel({
         original: prediction.className,
