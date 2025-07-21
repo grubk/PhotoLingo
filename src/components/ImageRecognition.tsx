@@ -4,115 +4,7 @@ import React, { useState, useRef, useCallback } from 'react';
 import { imageClassifier, Prediction } from '@/utils/imageClassifier';
 import { translateText } from '@/utils/translator';
 import SpotlightCard from './spotlightcard';
-
-// Lingva Translate supported languages
-const SUPPORTED_LANGUAGES = [
-  { code: 'af', name: 'Afrikaans' },
-  { code: 'sq', name: 'Albanian' },
-  { code: 'am', name: 'Amharic' },
-  { code: 'ar', name: 'Arabic' },
-  { code: 'hy', name: 'Armenian' },
-  { code: 'az', name: 'Azerbaijani' },
-  { code: 'eu', name: 'Basque' },
-  { code: 'be', name: 'Belarusian' },
-  { code: 'bn', name: 'Bengali' },
-  { code: 'bs', name: 'Bosnian' },
-  { code: 'bg', name: 'Bulgarian' },
-  { code: 'ca', name: 'Catalan' },
-  { code: 'ceb', name: 'Cebuano' },
-  { code: 'ny', name: 'Chichewa' },
-  { code: 'zh', name: 'Chinese (Simplified)' },
-  { code: 'zh-tw', name: 'Chinese (Traditional)' },
-  { code: 'co', name: 'Corsican' },
-  { code: 'hr', name: 'Croatian' },
-  { code: 'cs', name: 'Czech' },
-  { code: 'da', name: 'Danish' },
-  { code: 'nl', name: 'Dutch' },
-  { code: 'en', name: 'English' },
-  { code: 'eo', name: 'Esperanto' },
-  { code: 'et', name: 'Estonian' },
-  { code: 'tl', name: 'Filipino' },
-  { code: 'fi', name: 'Finnish' },
-  { code: 'fr', name: 'French' },
-  { code: 'fy', name: 'Frisian' },
-  { code: 'gl', name: 'Galician' },
-  { code: 'ka', name: 'Georgian' },
-  { code: 'de', name: 'German' },
-  { code: 'el', name: 'Greek' },
-  { code: 'gu', name: 'Gujarati' },
-  { code: 'ht', name: 'Haitian Creole' },
-  { code: 'ha', name: 'Hausa' },
-  { code: 'haw', name: 'Hawaiian' },
-  { code: 'he', name: 'Hebrew' },
-  { code: 'hi', name: 'Hindi' },
-  { code: 'hmn', name: 'Hmong' },
-  { code: 'hu', name: 'Hungarian' },
-  { code: 'is', name: 'Icelandic' },
-  { code: 'ig', name: 'Igbo' },
-  { code: 'id', name: 'Indonesian' },
-  { code: 'ga', name: 'Irish' },
-  { code: 'it', name: 'Italian' },
-  { code: 'ja', name: 'Japanese' },
-  { code: 'jv', name: 'Javanese' },
-  { code: 'kn', name: 'Kannada' },
-  { code: 'kk', name: 'Kazakh' },
-  { code: 'km', name: 'Khmer' },
-  { code: 'ko', name: 'Korean' },
-  { code: 'ku', name: 'Kurdish (Kurmanji)' },
-  { code: 'ky', name: 'Kyrgyz' },
-  { code: 'lo', name: 'Lao' },
-  { code: 'la', name: 'Latin' },
-  { code: 'lv', name: 'Latvian' },
-  { code: 'lt', name: 'Lithuanian' },
-  { code: 'lb', name: 'Luxembourgish' },
-  { code: 'mk', name: 'Macedonian' },
-  { code: 'mg', name: 'Malagasy' },
-  { code: 'ms', name: 'Malay' },
-  { code: 'ml', name: 'Malayalam' },
-  { code: 'mt', name: 'Maltese' },
-  { code: 'mi', name: 'Maori' },
-  { code: 'mr', name: 'Marathi' },
-  { code: 'mn', name: 'Mongolian' },
-  { code: 'my', name: 'Myanmar (Burmese)' },
-  { code: 'ne', name: 'Nepali' },
-  { code: 'no', name: 'Norwegian' },
-  { code: 'ps', name: 'Pashto' },
-  { code: 'fa', name: 'Persian' },
-  { code: 'pl', name: 'Polish' },
-  { code: 'pt', name: 'Portuguese' },
-  { code: 'pa', name: 'Punjabi' },
-  { code: 'ro', name: 'Romanian' },
-  { code: 'ru', name: 'Russian' },
-  { code: 'sm', name: 'Samoan' },
-  { code: 'gd', name: 'Scots Gaelic' },
-  { code: 'sr', name: 'Serbian' },
-  { code: 'st', name: 'Sesotho' },
-  { code: 'sn', name: 'Shona' },
-  { code: 'sd', name: 'Sindhi' },
-  { code: 'si', name: 'Sinhala' },
-  { code: 'sk', name: 'Slovak' },
-  { code: 'sl', name: 'Slovenian' },
-  { code: 'so', name: 'Somali' },
-  { code: 'es', name: 'Spanish' },
-  { code: 'su', name: 'Sundanese' },
-  { code: 'sw', name: 'Swahili' },
-  { code: 'sv', name: 'Swedish' },
-  { code: 'tg', name: 'Tajik' },
-  { code: 'ta', name: 'Tamil' },
-  { code: 'te', name: 'Telugu' },
-  { code: 'th', name: 'Thai' },
-  { code: 'tr', name: 'Turkish' },
-  { code: 'uk', name: 'Ukrainian' },
-  { code: 'ur', name: 'Urdu' },
-  { code: 'uz', name: 'Uzbek' },
-  { code: 'vi', name: 'Vietnamese' },
-  { code: 'cy', name: 'Welsh' },
-  { code: 'xh', name: 'Xhosa' },
-  { code: 'yi', name: 'Yiddish' },
-  { code: 'yo', name: 'Yoruba' },
-  { code: 'zu', name: 'Zulu' },
-];
-
+import { SUPPORTED_LANGUAGES } from '@/utils/languages';
 interface TranslationData {
   original: string;
   translated: string;
@@ -251,24 +143,21 @@ export default function ImageRecognition() {
   }, []);
 
   return (
-    <SpotlightCard className= "custom-spotlight-card" spotlightColor="rgba(0, 0, 0, 0.4)">
-      <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
-        AI Image Recognition
-      </h2>
+    <SpotlightCard className= "custom-spotlight-card" spotlightColor="rgba(0, 0, 0, 0.3)">
       
       {/* Language Selection */}
       <div className="mb-6">
-        <label htmlFor="language-select" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="language-select" className="block text-lg font-medium text-white/80 mb-2">
           Select Translation Language:
         </label>
         <select
           id="language-select"
           value={selectedLanguage}
           onChange={(e) => setSelectedLanguage(e.target.value)}
-          className="w-full p-3 text-gray-800 border border-gray-800 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+          className="w-full p-3 bg-white/20 hover:bg-white/30 text-white/80 rounded-lg focus:ring-blue-500 focus:border-blue-500"
         >
           {SUPPORTED_LANGUAGES.map((lang) => (
-            <option key={lang.code} value={lang.code} className="text-gray-800">
+            <option key={lang.code} value={lang.code} className="text-gray-500">
               {lang.name}
             </option>
           ))}
@@ -280,7 +169,7 @@ export default function ImageRecognition() {
         <div className="flex items-center justify-center w-full">
           <label 
             htmlFor="image-upload" 
-            className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-800 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors"
+            className="flex flex-col items-center justify-center w-full h-64 border-2 border-white border-dashed rounded-lg cursor-pointer bg-transparent hover:bg-white/10 transition-colors"
           >
             {imageUrl ? (
               <img 
@@ -291,13 +180,13 @@ export default function ImageRecognition() {
               />
             ) : (
               <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                <svg className="w-8 h-8 mb-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                <svg className="w-8 h-8 mb-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
                   <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
                 </svg>
-                <p className="mb-2 text-sm text-gray-500">
+                <p className="mb-2 text-sm text-white">
                   <span className="font-semibold">Click to upload</span> or drag and drop
                 </p>
-                <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                <p className="text-xs text-white/80">PNG, JPG, GIF up to 10MB</p>
               </div>
             )}
             <input 
@@ -314,7 +203,7 @@ export default function ImageRecognition() {
         {imageUrl && (
           <button
             onClick={clearImage}
-            className="mt-4 w-full bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded transition-colors"
+            className="mt-4 w-full bg-red-400/40 hover:bg-red-400/50 text-white font-bold py-2 px-4 rounded transition-colors"
           >
             Clear Image
           </button>
@@ -340,14 +229,14 @@ export default function ImageRecognition() {
       {/* Results as Clickable Buttons */}
       {predictions.length > 0 && (
         <div className="mb-6">
-          <h3 className="text-lg font-semibold mb-3 text-gray-800">Recognition Results (Click to translate):</h3>
+          <h3 className="text-lg font-medium mb-3 text-white/80">Recognition Results (Click to translate):</h3>
           <div className="grid grid-cols-1 gap-2">
             {predictions.slice(0, 5).map((prediction, index) => (
               <button
                 key={index}
                 onClick={() => handlePredictionClick(prediction)}
                 disabled={translating}
-                className="flex justify-between items-center p-3 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex justify-between items-center p-3 bg-blue-50/50 hover:bg-blue-100/50 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <span className="font-medium text-gray-800 capitalize">
                   {prediction.className}
@@ -355,11 +244,11 @@ export default function ImageRecognition() {
                 <div className="flex items-center">
                   <div className="w-32 bg-gray-200 rounded-full h-2 mr-3">
                     <div 
-                      className="bg-blue-600 h-2 rounded-full transition-all duration-300" 
+                      className="bg-blue-600/80 h-2 rounded-full transition-all duration-300" 
                       style={{ width: `${prediction.probability * 100}%` }}
                     ></div>
                   </div>
-                  <span className="text-sm font-bold text-gray-700">
+                  <span className="text-sm font-bold text-gray-700/80">
                     {(prediction.probability * 100).toFixed(1)}%
                   </span>
                 </div>
@@ -372,7 +261,7 @@ export default function ImageRecognition() {
       {/* Translation Panel */}
       {translationPanel && (
         <div className="fixed inset-0 backdrop-blur-md bg-none flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4 relative shadow-xl">
+          <div className="bg-white/80 rounded-lg p-6 max-w-md w-full mx-4 relative shadow-xl">
             <button
               onClick={closeTranslationPanel}
               className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
@@ -419,7 +308,7 @@ export default function ImageRecognition() {
       {/* Translating State */}
       {translating && (
         <div className="fixed inset-0 backdrop-blur-md bg-none bg-opacity-0 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 text-center">
+          <div className="bg-white/80 rounded-lg p-6 text-center">
             <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-4"></div>
             <p className="text-gray-600">Translating...</p>
           </div>
@@ -427,7 +316,7 @@ export default function ImageRecognition() {
       )}
 
       {/* Info */}
-      <div className="text-sm text-gray-500 text-center">
+      <div className="text-sm text-white/80 text-center">
         <p className="mt-1">Recognizes 1000+ categories of objects, animals, and scenes</p>
         <p className="mt-1">Click on any result to see translation in {SUPPORTED_LANGUAGES.find(lang => lang.code === selectedLanguage)?.name}</p>
       </div>
@@ -436,7 +325,7 @@ export default function ImageRecognition() {
       <div className="mt-6 text-center">
         <button
           onClick={openHistoryPanel}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors"
+          className="bg-blue-600/50 hover:bg-blue-700/50 text-white font-bold py-2 px-4 rounded transition-colors"
         >
           Translation History
         </button>
@@ -445,7 +334,7 @@ export default function ImageRecognition() {
       {/* Translation History Panel */}
       {historyPanel && (
         <div className="fixed inset-0 backdrop-blur-md bg-none flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4 relative shadow-xl h-2/3 flex flex-col">
+          <div className="bg-white/80 rounded-lg p-6 max-w-md w-full mx-4 relative shadow-xl h-2/3 flex flex-col">
             <button
               onClick={closeHistoryPanel}
               className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
