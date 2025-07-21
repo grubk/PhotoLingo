@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build",
+    "tauri:build-zip": "tauri build && npm run create-zip",
+    "create-zip": "powershell -ExecutionPolicy Bypass -File scripts/create-zip.ps1"
   },
   "dependencies": {
     "@tensorflow-models/mobilenet": "^2.1.1",
