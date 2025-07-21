@@ -29,9 +29,9 @@ export default function Home() {
           </div>
           <SplitText
             text="AI-Powered Image Recognition for Language Learning"
-            className="text-sm font-light text-center text-gray-600"
-            delay={50}
-            duration={0.3}
+            className="text-sm font-light text-center text-slate-600"
+            delay={10}
+            duration={0.1}
             ease="power3.out"
             splitType="chars"
             from={{ opacity: 0, y: 40 }}

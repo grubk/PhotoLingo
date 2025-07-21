@@ -157,7 +157,7 @@ export default function ImageRecognition() {
           className="w-full p-3 bg-white/20 hover:bg-white/30 text-white/80 rounded-lg focus:ring-blue-500 focus:border-blue-500"
         >
           {SUPPORTED_LANGUAGES.map((lang) => (
-            <option key={lang.code} value={lang.code} className="text-gray-500">
+            <option key={lang.code} value={lang.code} className="text-slate-500">
               {lang.name}
             </option>
           ))}
@@ -214,7 +214,7 @@ export default function ImageRecognition() {
       {loading && (
         <div className="text-center mb-6">
           <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <p className="mt-2 text-gray-600">Analyzing image...</p>
+          <p className="mt-2 text-white/80">Analyzing image...</p>
         </div>
       )}
 
@@ -238,7 +238,7 @@ export default function ImageRecognition() {
                 disabled={translating}
                 className="flex justify-between items-center p-3 bg-blue-50/50 hover:bg-blue-100/50 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <span className="font-medium text-gray-800 capitalize">
+                <span className="font-medium text-slate-700 capitalize">
                   {prediction.className}
                 </span>
                 <div className="flex items-center">
@@ -248,7 +248,7 @@ export default function ImageRecognition() {
                       style={{ width: `${prediction.probability * 100}%` }}
                     ></div>
                   </div>
-                  <span className="text-sm font-bold text-gray-700/80">
+                  <span className="text-sm font-bold text-slate-700/80">
                     {(prediction.probability * 100).toFixed(1)}%
                   </span>
                 </div>
