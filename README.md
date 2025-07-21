@@ -2,6 +2,7 @@
 
 **PhotoLingo** is a lightweight, beginner-friendly application that helps users learn new languages by recognizing everyday objects and translating their names into different languages.
 
+<img src="https://github.com/grubk/photolingo/blob/master/src-tauri/icons/PhotoLingoIcon.png" alt="PhotoLingo Logo" width="250">
 ---
 
 ## 🚀 How It Works
@@ -26,6 +27,11 @@ Once you’ve uploaded an image and selected a language, PhotoLingo:
 - Displays the translated words so you can learn how the object is named in your chosen language.
 
 ---
+## 🔮Coming Soon
+Next release will include:
+- Glass UI/UX
+- Translation history feature (already implemented, as seen in demos. Will be delivered in next release)
+---
 
 ## 🛠️ Tech Stack
 
@@ -38,6 +44,14 @@ Once you’ve uploaded an image and selected a language, PhotoLingo:
 ## 📦 Installation
 
 Download the latest version from the [**Releases Page**](https://github.com/grubk/photolingo/releases) and follow the installation instructions for your platform.
+
+---
+## 🖼️App Demo
+Here are some screenshots from the app so you can see it in action:
+
+
+<img src="https://github.com/grubk/photolingo/blob/master/demos/Screenshot%202025-07-19%20203759.png" alt="Sample 1" width="500"> <img src="https://github.com/grubk/photolingo/blob/master/demos/Screenshot%202025-07-19%20204056.png" alt="Sample 2" width="500">
+<img src="https://github.com/grubk/photolingo/blob/master/demos/Screenshot%202025-07-19%20204244.png" alt="Sample 3" width="500">
 
 ---
 
