@@ -50,8 +50,9 @@ Download the latest version from the [**Releases Page**](https://github.com/grub
 Here are some screenshots from the app so you can see it in action:
 
 
-<img src="https://github.com/grubk/photolingo/blob/master/demos/Screenshot%202025-07-19%20203759.png" alt="Sample 1" width="500"> <img src="https://github.com/grubk/photolingo/blob/master/demos/Screenshot%202025-07-19%20204056.png" alt="Sample 2" width="500">
-<img src="https://github.com/grubk/photolingo/blob/master/demos/Screenshot%202025-07-19%20204244.png" alt="Sample 3" width="500">
+<img src="https://github.com/grubk/PhotoLingo/blob/master/demos/Screenshot%202025-07-20%20215435.png" alt="Sample 1" width="800">
+<img src="https://github.com/grubk/PhotoLingo/blob/master/demos/Screenshot%202025-07-20%20215430.png" alt="Sample 2" width="800">
+<img src="https://github.com/grubk/PhotoLingo/blob/master/demos/Screenshot%202025-07-20%20215441.png" alt="Sample 3" width="800">
 
 ---
 
