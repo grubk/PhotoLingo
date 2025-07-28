@@ -35,8 +35,8 @@ Next release will include:
 
 ## 🛠️ Tech Stack
 
-- 🧠 **MobileNet** – for image recognition  
-- 🌐 **Lingva Translate** – for multilingual translation  
+- **MobileNet** – for image recognition  
+- **Lingva Translate** – for multilingual translation  
   [🔗 GitHub Repo](https://github.com/thedaviddelta/lingva-translate)
 
 ---
