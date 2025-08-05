@@ -29,8 +29,8 @@ Once you’ve uploaded an image and selected a language, PhotoLingo:
 
 ---
 ## 🔮Coming Soon
-- ~~Glass UI/UX~~
-- ~~Translation history feature (already implemented, as seen in demos. Will be delivered in next release)~~
+- ~~Glass UI/UX~~ ✅
+- ~~Translation history feature (already implemented, as seen in demos. Will be delivered in next release)~~ ✅
 ---
 
 ## 🛠️ Tech Stack
