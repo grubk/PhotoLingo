@@ -25,12 +25,12 @@ Once you’ve uploaded an image and selected a language, PhotoLingo:
 - Uses an AI model to guess the object in the photo.
 - Translates the guesses using Lingva Translate.
 - Displays the translated words so you can learn how the object is named in your chosen language.
+- Translation history
 
 ---
 ## 🔮Coming Soon
-Next release will include:
-- Glass UI/UX
-- Translation history feature (already implemented, as seen in demos. Will be delivered in next release)
+- ~~Glass UI/UX~~
+- ~~Translation history feature (already implemented, as seen in demos. Will be delivered in next release)~~
 ---
 
 ## 🛠️ Tech Stack
